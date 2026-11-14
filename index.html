@@ -1,805 +1,370 @@
-<!DOCTYPE html>
-<html lang="en">
+<!doctype html>
+<html lang="en" data-surface-mode="persuade" data-concept="brand-paper" data-layout-system="editorial-columns" data-renderer="brand-story" data-industry="software">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Rahul J. // Dashboard</title>
-  
-  <!-- Load Custom Fonts -->
-  <link rel="preconnect" href="https://fonts.googleapis.com">
-  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=EB+Garamond:ital,wght@0,400;0,500&family=JetBrains+Mono:wght@400&family=Saira+Condensed:wght@400&display=swap" rel="stylesheet">
-  
-  <!-- Load Tailwind CSS -->
-  <script src="https://cdn.tailwindcss.com"></script>
-  
-  <!-- Load React & Babel -->
-  <script src="https://unpkg.com/react@18/umd/react.production.min.js" crossorigin></script>
-  <script src="https://unpkg.com/react-dom@18/umd/react-dom.production.min.js" crossorigin></script>
-  <script src="https://unpkg.com/@babel/standalone/babel.min.js"></script>
-
-  <style>
-    body { background-color: #000; margin: 0; padding: 0; }
-  </style>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Rahul J. · MACHINE LEARNING, MARKETS &amp; THE MIND</title>
+  <meta name="description" content="Rahul J. builds learning systems for retrieval, ranking, anomaly detection and vision, and studies the economics and psychology that decide whether such systems matter." />
+  <meta name="robots" content="index,follow" />
+  <link rel="canonical" href="https://solvyreryx.github.io/portfolio/" />
+  <meta property="og:title" content="Rahul J. · MACHINE LEARNING, MARKETS &amp; THE MIND" />
+  <meta property="og:description" content="Rahul J. builds learning systems for retrieval, ranking, anomaly detection and vision, and studies the economics and psychology that decide whether such systems matter." />
+  <meta property="og:url" content="https://solvyreryx.github.io/portfolio/" />
+  <meta property="og:type" content="website" />
+  <link rel="icon" href="data:image/svg+xml,%3Csvg%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%20viewBox%3D%220%200%2048%2048%22%3E%3Crect%20width%3D%2248%22%20height%3D%2248%22%20rx%3D%2210%22%20fill%3D%22%23141619%22%2F%3E%3Ctext%20x%3D%2224%22%20y%3D%2234%22%20text-anchor%3D%22middle%22%20font-family%3D%22sans-serif%22%20font-size%3D%2232%22%20fill%3D%22%23ffffff%22%3ER%3C%2Ftext%3E%3C%2Fsvg%3E" />
+  <link rel="preload" href="./assets/fonts/inter-tight-latin-wght-normal.woff2" as="font" type="font/woff2" crossorigin />
+  <meta name="theme-color" content="#ffffff" />
+  <link rel="stylesheet" href="./styles.css" />
 </head>
 <body>
-  <div id="root"></div>
-
-  <script type="text/babel">
-    const { useState, useEffect } = React;
-
-    // --- ICON SYSTEM (Replacing Lucide Imports for Standalone HTML) ---
-    const IconBase = ({ size = 24, className = "", children }) => (
-      <svg xmlns="http://www.w3.org/2000/svg" width={size} height={size} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className={className}>
-        {children}
-      </svg>
-    );
-    const Menu = (props) => <IconBase {...props}><line x1="4" x2="20" y1="12" y2="12"/><line x1="4" x2="20" y1="6" y2="6"/><line x1="4" x2="20" y1="18" y2="18"/></IconBase>;
-    const X = (props) => <IconBase {...props}><path d="M18 6 6 18"/><path d="m6 6 12 12"/></IconBase>;
-    const ArrowRight = (props) => <IconBase {...props}><path d="M5 12h14"/><path d="m12 5 7 7-7 7"/></IconBase>;
-    const ExternalLink = (props) => <IconBase {...props}><path d="M15 3h6v6"/><path d="M10 14 21 3"/><path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"/></IconBase>;
-    const Github = (props) => <IconBase {...props}><path d="M15 22v-4a4.8 4.8 0 0 0-1-3.5c3 0 6-2 6-5.5.08-1.25-.27-2.48-1-3.5.28-1.15.28-2.35 0-3.5 0 0-1 0-3 1.5-2.64-.5-5.36-.5-8 0C6 2 5 2 5 2c-.3 1.15-.3 2.35 0 3.5A5.403 5.403 0 0 0 4 9c0 3.5 3 5.5 6 5.5-.39.49-.68 1.05-.85 1.65-.17.6-.22 1.23-.15 1.85v4"/><path d="M9 18c-4.51 2-5-2-7-2"/></IconBase>;
-    const Linkedin = (props) => <IconBase {...props}><path d="M16 8a6 6 0 0 1 6 6v7h-4v-7a2 2 0 0 0-2-2 2 2 0 0 0-2 2v7h-4v-7a6 6 0 0 1 6-6z"/><rect width="4" height="12" x="2" y="9"/><circle cx="4" cy="4" r="2"/></IconBase>;
-    const Terminal = (props) => <IconBase {...props}><polyline points="4 17 10 11 4 5"/><line x1="12" x2="20" y1="19" y2="19"/></IconBase>;
-    const Activity = (props) => <IconBase {...props}><path d="M22 12h-2.48a2 2 0 0 0-1.93 1.46l-2.35 8.36a.25.25 0 0 1-.48 0L9.24 2.18a.25.25 0 0 0-.48 0l-2.35 8.36A2 2 0 0 1 4.49 12H2"/></IconBase>;
-
-    const DiscordIcon = ({ size = 16, className = "" }) => (
-      <svg width={size} height={size} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className={className}>
-        <path d="M21 16.5C21 16.5 19.5 21 15 21C15 21 14.5 19.5 14 19C15.5 18.5 16 17.5 16 17.5C16 17.5 15.5 18 12 18.5C8.5 18 8 17.5 8 17.5C8 17.5 8.5 18.5 10 19C9.5 19.5 9 21 9 21C4.5 21 3 16.5 3 16.5C3 16.5 4.5 10.5 8 10L8.5 11.5C8.5 11.5 10.5 10.5 12 10.5C13.5 10.5 15.5 11.5 15.5 11.5L16 10C19.5 10.5 21 16.5 21 16.5Z"/>
-        <circle cx="9" cy="14" r="1" fill="currentColor"/>
-        <circle cx="15" cy="14" r="1" fill="currentColor"/>
-      </svg>
-    );
-
-    // --- DATA & CONTENT ---
-    const DATA = {
-      profile: {
-        name: "RAHUL J.",
-        headline: "BUILDING INTELLIGENCE, ONE LAYER AT A TIME",
-        subtitle: "19-year-old B.E. Artificial Intelligence & Data Science student. Exploring the intersection of cognition, quantitative systems, and the architecture of lasting growth.",
-        github: "https://github.com/SolvyrEryx",
-        linkedin: "https://www.linkedin.com/in/rahulj7777",
-        discord: "ineffablebeast"
-      },
-      identity: {
-        core: "I am not someone who follows a traditional path blindly. My journey is shaped by a strong internal drive to achieve something meaningful and create a life of independence, impact, and freedom.",
-        vision: "To relentlessly expand cognitive and technical frameworks. Building a lifelong, self-directed curriculum at the intersection of deep tech, human behavior, and complex systems to deploy solutions that genuinely scale.",
-        approach: "Learning by doing. Building projects alongside theory. Connecting ideas across disciplines. Using knowledge for real-world applications.",
-        traits: [
-          "Highly analytical and strategic thinker",
-          "Resilient due to early life experiences",
-          "Curious and constantly learning",
-          "Ambitious but grounded in reality",
-          "Values both absolute success and inner peace"
-        ],
-        domains: [
-          "Artificial Intelligence & Data Science",
-          "Programming & System Thinking (DSA)",
-          "Psychology, Sociology, and Human Behavior",
-          "Economics and the future impact of AI",
-          "Business, strategy, and real-world systems"
-        ]
-      },
-      focus: {
-        lastUpdated: "2026-05-03",
-        goals: [
-          "Master technical skills in AI, coding, and Data Structures",
-          "Prepare for GMAT with a strict strategic approach",
-          "Develop a psychology-focused NGO/initiative for students",
-          "Secure high-leverage internships and global exposure"
-        ],
-        skills: [
-          "Systematic Problem Solving",
-          "Quantitative Risk Management",
-          "Cognitive Task Optimization"
-        ],
-        active: [
-          "Building a definitive AI/DS project portfolio",
-          "Acquiring global certifications (Coursera, etc.)",
-          "Synthesizing tech and human behavioral models"
-        ]
-      },
-      journey: [
-        {
-          id: 1,
-          date: "CURRENT",
-          title: "B.E. ARTIFICIAL INTELLIGENCE & DATA SCIENCE",
-          did: "Commenced formal undergraduate studies in AI and Data Science.",
-          learned: "A structured environment provides the foundational mathematics required to scale raw cognitive capability into engineered systems.",
-          changed: "Shifted from purely tactical execution to long-term architectural planning in deep technology."
-        },
-        {
-          id: 2,
-          date: "PREVIOUS",
-          title: "QUANTITATIVE SYSTEMS & ALGO TRADING",
-          did: "Traded forex via prop firms and CFD accounts utilizing algorithmic and quantitative strategies.",
-          learned: "Markets aggressively punish emotional bias. True edge comes from extreme discipline, statistical risk management, and system optimization.",
-          changed: "Forged deep psychological resilience and solidified a permanent drive for absolute financial and operational independence."
-        },
-        {
-          id: 3,
-          date: "FOUNDATIONAL",
-          title: "COGNITIVE TASKS & STRATEGY",
-          did: "Cultivated a strong natural ability in cognitive tasks, problem-solving, and strategic thinking via coding and chess.",
-          learned: "Pattern recognition and strategic foresight are universal primitives that transfer across all high-level domains.",
-          changed: "Developed the ability to view challenges not as isolated problems, but as interconnected systems waiting to be decoded."
-        }
-      ],
-      learning: [
-        {
-          id: "CERT-001",
-          course: "Data Structures and Algorithms Specialization",
-          institution: "UC San Diego / Coursera",
-          progress: 30, 
-          status: "ACTIVE COMPUTATION",
-          methodology: "Constructing raw, optimized code from the ground up, bypassing surface-level abstractions to master underlying mechanics.",
-          challenge: "Forcing spatial and temporal complexity mapping into muscle memory before writing execution logic.",
-          metrics: "Drastically reduced Big-O execution time in complex graph traversals and algorithmic scaling."
-        },
-        {
-          id: "CERT-002",
-          course: "The Economics of AI",
-          institution: "University of Virginia",
-          progress: 100,
-          status: "ADVANCED CLEARANCE",
-          methodology: "Synthesizing deep-tech automation capabilities with macro-economic behavioral models to forecast market phase shifts.",
-          challenge: "Quantifying abstract human labor displacement against rigid machine-learning productivity curves.",
-          metrics: "Built predictive mental models mapping AI automation velocity against human psychological resilience.",
-          link: "https://www.coursera.org/account/accomplishments/verify/PZAD8HO2AOE5"
-        },
-        {
-          id: "CERT-003",
-          course: "Python for Everybody",
-          institution: "University of Michigan",
-          progress: 100,
-          status: "SYSTEM MASTERED",
-          methodology: "Immersive syntax repetition and architectural pipeline construction over passive lecture consumption.",
-          challenge: "Overwriting procedural habits to adopt advanced Pythonic idioms and vectorized data manipulation.",
-          metrics: "Automated multi-stage extraction protocols, slashing manual data-prep overhead significantly."
-        }
-      ],
-      projects: [
-        {
-          id: 1,
-          title: "PSYCHOLOGY-FOCUSED STUDENT INITIATIVE",
-          problem: "Students lack structured psychological support and cognitive frameworks to navigate high-pressure academic and life environments.",
-          approach: "Designing an NGO/initiative that leverages behavioral psychology to build resilience and strategic thinking in youth.",
-          outcome: "Currently in architectural phase. Mapping out core curriculum and support systems.",
-          learnings: "Social impact requires the same rigorous system design as a technical architecture."
-        },
-        {
-          id: 2,
-          title: "QUANTITATIVE TRADING FRAMEWORK",
-          problem: "Eliminating human psychological variance from volatile market environments in prop firm evaluations.",
-          approach: "Developed rule-based execution algorithms focusing on strict risk-to-reward metrics and drawdown limits.",
-          outcome: "Successfully navigated prop firm evaluations through statistical edge rather than intuition.",
-          learnings: "A mediocre system executed with perfect discipline beats a perfect system executed with human emotion."
-        }
-      ]
-    };
-
-    // --- SYSTEM COMPONENTS ---
-    const ButtonPrimary = ({ children, onClick, href }) => {
-      const baseClasses = "inline-flex items-center justify-center border border-white bg-transparent text-white rounded-full h-[44px] px-[32px] font-mono text-[14px] tracking-[2.5px] uppercase transition-colors duration-300 hover:bg-white hover:text-black cursor-pointer";
-      if (href) {
-        return <a href={href} className={baseClasses} target="_blank" rel="noopener noreferrer">{children}</a>;
-      }
-      return <button onClick={onClick} className={baseClasses}>{children}</button>;
-    };
-
-    const TextLink = ({ children, onClick, href }) => {
-      const baseClasses = "text-[#c3d9f3] underline decoration-[#c3d9f3]/30 hover:decoration-[#c3d9f3] transition-colors cursor-pointer font-mono text-[12px] tracking-[2px] uppercase";
-      if (href) {
-        return <a href={href} className={baseClasses} target="_blank" rel="noopener noreferrer">{children}</a>;
-      }
-      return <span onClick={onClick} className={baseClasses}>{children}</span>;
-    };
-
-    // --- MAIN APPLICATION ---
-    const App = () => {
-      const [activeRoute, setActiveRoute] = useState('home');
-      const [menuOpen, setMenuOpen] = useState(false);
-      const [typingText, setTypingText] = useState("");
-      const [audioPlaying, setAudioPlaying] = useState(false);
-      const [sysLoad, setSysLoad] = useState(42.4);
-      
-      // Terminal Typing Logic
-      useEffect(() => {
-        const terminalSequence = `> SYSTEM ONLINE. USER: RAHUL J. // AGE: 19 // LOC: BLR. // SYS_MEM: ${sysLoad.toFixed(1)}% // INITIATING COGNITIVE PROTOCOLS...`;
-        let i = 0;
-        const typingInterval = setInterval(() => {
-          if (i <= terminalSequence.length) {
-            setTypingText(terminalSequence.slice(0, i));
-            i++;
-          } else {
-            clearInterval(typingInterval);
-          }
-        }, 20);
-        return () => clearInterval(typingInterval);
-      }, []);
-
-      // Live System Telemetry Logic
-      useEffect(() => {
-        const telemetryInterval = setInterval(() => {
-          setSysLoad(prev => (38 + Math.random() * 24)); 
-        }, 2500);
-        return () => clearInterval(telemetryInterval);
-      }, []);
-
-      const navigate = (route) => {
-        setActiveRoute(route);
-        setMenuOpen(false);
-        window.scrollTo(0, 0);
-      };
-
-      const toggleAudio = () => {
-        const audio = document.getElementById('dossier-audio');
-        if (!audio) return;
-        
-        if (audioPlaying) { 
-          audio.pause(); 
-          setAudioPlaying(false); 
-        } else { 
-          const playPromise = audio.play();
-          if (playPromise !== undefined) {
-            playPromise.then(() => {
-              setAudioPlaying(true);
-            }).catch(error => {
-              console.error("Audio playback failed:", error);
-              setAudioPlaying(false);
-            });
-          }
-        }
-      };
-
-      // ----------------------------------------------------------------------
-      // RENDER DOSSIER LAYOUT (Stand-alone Overlay Layout)
-      // ----------------------------------------------------------------------
-      if (activeRoute === 'dossier') {
-        return (
-          <div className="min-h-screen w-full bg-black text-white flex items-center justify-center relative overflow-hidden animate-fade-in font-sans">
-            <style dangerouslySetInnerHTML={{__html: `
-              .font-display { font-family: 'Saira Condensed', sans-serif; }
-              .font-text { font-family: 'EB Garamond', serif; }
-              .font-mono { font-family: 'JetBrains Mono', monospace; }
-              .typography-display-lg { font-family: 'Saira Condensed', sans-serif; font-size: 48px; font-weight: 400; line-height: 1.15; letter-spacing: 3px; text-transform: uppercase; }
-              .typography-caption { font-family: 'JetBrains Mono', monospace; font-size: 11px; font-weight: 400; line-height: 1.4; letter-spacing: 2px; text-transform: uppercase; }
-              .typography-nav { font-family: 'JetBrains Mono', monospace; font-size: 12px; font-weight: 400; line-height: 1.4; letter-spacing: 2px; text-transform: uppercase; }
-              .typography-body-md { font-family: 'EB Garamond', serif; font-size: 16px; font-weight: 400; line-height: 1.5; letter-spacing: 0; text-transform: none; color: #cccccc; }
-              .animate-float { animation: float 8s ease-in-out infinite; }
-              @keyframes float { 0%, 100% { transform: translateY(0); } 50% { transform: translateY(-12px); } }
-              .animate-scanline { animation: scanline 4s linear infinite; }
-              @keyframes scanline { 0% { top: -10%; opacity: 0; } 10% { opacity: 1; } 90% { opacity: 1; } 100% { top: 110%; opacity: 0; } }
-              .animate-pulse-slow { animation: pulseBg 8s ease-in-out infinite alternate; }
-              @keyframes pulseBg { 0% { opacity: 0.3; } 100% { opacity: 0.6; } }
-              @media (max-width: 768px) { .typography-display-lg { font-size: 32px; } }
-            `}} />
-
-            <div className="absolute inset-0 bg-[radial-gradient(ellipse_at_center,_var(--tw-gradient-stops))] from-[#1a1c23] via-black to-black animate-pulse-slow z-0"></div>
-
-            <video autoPlay loop muted playsInline className="absolute inset-0 w-full h-full object-cover opacity-40 z-0" onError={(e) => { e.target.style.display = 'none'; }}>
-              <source src="https://assets.mixkit.co/videos/preview/mixkit-digital-animation-of-a-network-of-connections-31298-large.mp4" type="video/mp4" />
-            </video>
-            
-            <div className="absolute inset-0 bg-gradient-to-b from-black/80 via-black/30 to-black/90 pointer-events-none z-10"></div>
-
-            <audio id="dossier-audio" loop>
-               <source src="https://assets.mixkit.co/music/preview/mixkit-ambient-sci-fi-documentary-145.mp3" type="audio/mpeg" />
-            </audio>
-
-            <button onClick={() => navigate('home')} className="absolute top-8 left-6 md:left-12 typography-nav text-white hover:text-[#c3d9f3] z-[110] flex items-center gap-3 transition-colors cursor-pointer">
-              <ArrowRight className="rotate-180" size={14} /> RETURN
-            </button>
-
-            <button onClick={toggleAudio} className="absolute top-8 right-6 md:right-12 typography-nav text-white hover:text-[#c3d9f3] z-[110] flex items-center gap-3 transition-colors cursor-pointer">
-              {audioPlaying ? 'SOUND [ ON ]' : 'SOUND [ OFF ]'}
-            </button>
-
-            <div className="animate-float relative z-[110] border border-[#262626] bg-[#050505]/60 backdrop-blur-xl p-[40px] md:p-[64px] max-w-[560px] w-full mx-6 flex flex-col items-center text-center group hover:border-[#3a3a3a] transition-colors shadow-2xl overflow-hidden">
-                <div className="absolute top-0 left-0 w-full h-[1px] bg-[#c3d9f3]/40 animate-scanline z-0 pointer-events-none"></div>
-                <div className="absolute top-0 left-0 w-full h-[2px] bg-[#c3d9f3] opacity-0 group-hover:opacity-100 transition-opacity z-10"></div>
-                
-                <div className="relative z-10 w-full flex flex-col items-center">
-                  <div className="typography-caption text-[#c3d9f3] tracking-[4px] mb-[32px]">EXECUTIVE DOSSIER</div>
-                  <h1 className="typography-display-lg text-white mb-[8px]">{DATA.profile.name}</h1>
-                  <p className="typography-caption text-[#999999] mb-[40px] tracking-[3px]">19 // BLR // AI ARCHITECT</p>
-
-                  <div className="w-[40px] h-[1px] bg-[#3a3a3a] mb-[40px] group-hover:bg-white transition-colors"></div>
-
-                  <p className="typography-body-md text-[#cccccc] mb-[48px] max-w-[400px]">
-                     Building intelligent systems and cognitive architectures. Engineering the intersection of deep tech, human behavior, and high-performance execution.
-                  </p>
-
-                  <div className="flex flex-col gap-[16px] w-full items-center">
-                      <a href={DATA.profile.linkedin} target="_blank" rel="noopener noreferrer" className="typography-nav text-white border border-[#262626] hover:border-[#c3d9f3] bg-black/50 transition-colors py-[16px] px-[32px] w-full max-w-[320px] flex justify-center items-center gap-3">
-                          <Linkedin size={16} /> SECURE LINKEDIN NETWORK
-                      </a>
-                      <a href={DATA.profile.github} target="_blank" rel="noopener noreferrer" className="typography-nav text-white border border-[#262626] hover:border-[#c3d9f3] bg-black/50 transition-colors py-[16px] px-[32px] w-full max-w-[320px] flex justify-center items-center gap-3">
-                          <Github size={16} /> ACCESS GITHUB REPOSITORY
-                      </a>
-                      <a href={`https://discordapp.com/users/${DATA.profile.discord}`} target="_blank" rel="noopener noreferrer" className="typography-nav text-[#999999] hover:text-white border border-[#262626] bg-black/30 transition-colors py-[16px] px-[32px] w-full max-w-[320px] flex justify-center items-center gap-3">
-                          <DiscordIcon size={16} /> SECURE DISCORD COMMS
-                      </a>
-                  </div>
-                </div>
-            </div>
-          </div>
-        );
-      }
-
-      // ----------------------------------------------------------------------
-      // RENDER STANDARD DASHBOARD (For all other routes)
-      // ----------------------------------------------------------------------
-      return (
-        <div className="min-h-screen bg-black text-white selection:bg-white selection:text-black font-sans pb-[120px] relative">
-          <div className="fixed inset-0 pointer-events-none opacity-[0.03] z-0" style={{ backgroundImage: 'linear-gradient(#ffffff 1px, transparent 1px), linear-gradient(90deg, #ffffff 1px, transparent 1px)', backgroundSize: '40px 40px' }}></div>
-
-          <style dangerouslySetInnerHTML={{__html: `
-            .font-display { font-family: 'Saira Condensed', sans-serif; }
-            .font-text { font-family: 'EB Garamond', serif; }
-            .font-mono { font-family: 'JetBrains Mono', monospace; }
-            .typography-display-xl { font-family: 'Saira Condensed', sans-serif; font-size: 64px; font-weight: 400; line-height: 1.1; letter-spacing: 4px; text-transform: uppercase; }
-            .typography-display-lg { font-family: 'Saira Condensed', sans-serif; font-size: 48px; font-weight: 400; line-height: 1.15; letter-spacing: 3px; text-transform: uppercase; }
-            .typography-display-md { font-family: 'Saira Condensed', sans-serif; font-size: 32px; font-weight: 400; line-height: 1.2; letter-spacing: 2px; text-transform: uppercase; }
-            .typography-display-sm { font-family: 'Saira Condensed', sans-serif; font-size: 24px; font-weight: 400; line-height: 1.3; letter-spacing: 1.5px; text-transform: uppercase; }
-            .typography-wordmark { font-family: 'Saira Condensed', sans-serif; font-size: 14px; font-weight: 400; line-height: 1; letter-spacing: 6px; text-transform: uppercase; }
-            .typography-title-md { font-family: 'Saira Condensed', sans-serif; font-size: 20px; font-weight: 400; line-height: 1.3; letter-spacing: 1px; text-transform: uppercase; }
-            .typography-caption { font-family: 'JetBrains Mono', monospace; font-size: 11px; font-weight: 400; line-height: 1.4; letter-spacing: 2px; text-transform: uppercase; }
-            .typography-button { font-family: 'JetBrains Mono', monospace; font-size: 14px; font-weight: 400; line-height: 1; letter-spacing: 2.5px; text-transform: uppercase; }
-            .typography-nav { font-family: 'JetBrains Mono', monospace; font-size: 12px; font-weight: 400; line-height: 1.4; letter-spacing: 2px; text-transform: uppercase; }
-            .typography-body-md { font-family: 'EB Garamond', serif; font-size: 16px; font-weight: 400; line-height: 1.5; letter-spacing: 0; text-transform: none; color: #cccccc; }
-            .typography-body-sm { font-family: 'EB Garamond', serif; font-size: 14px; font-weight: 400; line-height: 1.5; letter-spacing: 0; text-transform: none; color: #cccccc; }
-            .animate-fade-in { animation: fadeIn 0.8s ease-out forwards; opacity: 0; }
-            @keyframes fadeIn { from { opacity: 0; transform: translateY(15px); } to { opacity: 1; transform: translateY(0); } }
-            .animate-scanline { animation: scanline 4s linear infinite; }
-            @keyframes scanline { 0% { top: -10%; opacity: 0; } 10% { opacity: 1; } 90% { opacity: 1; } 100% { top: 110%; opacity: 0; } }
-            .cursor-blink::after { content: '█'; animation: blink 1s step-start infinite; color: #c3d9f3; margin-left: 4px;}
-            @keyframes blink { 50% { opacity: 0; } }
-            @media (max-width: 768px) { .typography-display-xl { font-size: 40px; } .typography-display-lg { font-size: 32px; } }
-          `}} />
-
-          {/* TOP NAVIGATION */}
-          <nav className="fixed top-0 left-0 w-full h-[56px] flex items-center justify-between px-6 md:px-10 z-50 bg-black border-b border-[#262626]">
-            <button onClick={() => setMenuOpen(!menuOpen)} className="typography-nav text-white hover:text-[#cccccc] transition-colors flex items-center gap-2">
-              {menuOpen ? <X size={16} /> : "MENU"}
-            </button>
-            <div onClick={() => navigate('home')} className="typography-wordmark text-white cursor-pointer select-none relative left-3">
-              {DATA.profile.name}
-            </div>
-            <button onClick={() => navigate('focus')} className="typography-nav text-[#c3d9f3] hover:text-white transition-colors flex items-center gap-2">
-              <span className="w-1.5 h-1.5 rounded-full bg-[#c3d9f3] animate-pulse"></span>
-              <span className="hidden sm:inline">LIVE STATUS</span>
-            </button>
-          </nav>
-
-          {/* FULL SCREEN MENU */}
-          {menuOpen && (
-            <div className="fixed inset-0 bg-black z-40 flex flex-col justify-center items-center px-6 animate-fade-in" style={{ animationFillMode: 'both' }}>
-              <div className="flex flex-col gap-[40px] items-center">
-                {['home', 'identity', 'journey', 'learning', 'projects', 'focus', 'dossier'].map((route) => (
-                  <button key={route} onClick={() => navigate(route)} className={`typography-display-md hover:text-[#999999] transition-colors ${activeRoute === route ? 'text-white' : 'text-[#3a3a3a]'}`}>
-                    {route}
-                  </button>
-                ))}
-                <div className="w-[40px] h-[1px] bg-[#262626] my-[24px]"></div>
-                <div className="flex flex-wrap justify-center gap-8">
-                  <a href={DATA.profile.linkedin} target="_blank" rel="noopener noreferrer" className="typography-nav text-[#999999] hover:text-white">LINKEDIN</a>
-                  <a href={DATA.profile.github} target="_blank" rel="noopener noreferrer" className="typography-nav text-[#999999] hover:text-white">GITHUB</a>
-                  <a href={`https://discordapp.com/users/${DATA.profile.discord}`} target="_blank" rel="noopener noreferrer" className="typography-nav text-[#999999] hover:text-white flex items-center gap-2">
-                    <DiscordIcon size={14} /> DISCORD
-                  </a>
-                </div>
-              </div>
-            </div>
-          )}
-
-          {/* PAGE CONTENT */}
-          <main className="pt-[120px] px-6 md:px-12 max-w-[1280px] mx-auto min-h-[80vh] flex flex-col relative z-10" key={activeRoute}>
-
-            {/* === ROUTE: HOME === */}
-            {activeRoute === 'home' && (
-              <div className="flex flex-col animate-fade-in" style={{ animationFillMode: 'both' }}>
-                <div className="mb-[64px] border border-[#262626] bg-[#0d0d0d] p-4 flex items-center gap-3">
-                  <Terminal size={14} className="text-[#666666]" />
-                  <span className="typography-caption text-[#999999] cursor-blink">{typingText}</span>
-                </div>
-
-                <section className="min-h-[50vh] flex flex-col justify-center max-w-[1000px] mb-[120px]">
-                  <div className="flex items-center gap-4 mb-6">
-                     <span className="typography-caption text-[#c3d9f3]">// PROFILE: RAHUL J.</span>
-                     <div className="h-[1px] w-12 bg-[#262626]"></div>
-                  </div>
-                  <h1 className="typography-display-xl mb-[32px] text-white">{DATA.profile.headline}</h1>
-                  <p className="typography-body-md max-w-[700px] mb-[64px] text-[18px]">{DATA.profile.subtitle}</p>
-                  <div className="flex flex-wrap gap-4">
-                    <ButtonPrimary onClick={() => navigate('identity')}>READ CORE IDENTITY</ButtonPrimary>
-                    <ButtonPrimary onClick={() => navigate('journey')}>VIEW TIMELINE</ButtonPrimary>
-                  </div>
-                </section>
-
-                <section className="mb-[120px] flex justify-center animate-fade-in" style={{ animationDelay: '0.2s', animationFillMode: 'both' }}>
-                   <div className="border border-[#262626] bg-[#050505] p-[32px] md:p-[48px] w-full max-w-[1000px] flex flex-col md:flex-row gap-[40px] items-center justify-between hover:border-[#3a3a3a] transition-colors relative group overflow-hidden">
-                      <div className="absolute top-0 left-0 w-full h-[1px] bg-[#c3d9f3]/20 animate-scanline pointer-events-none"></div>
-                      <div className="absolute top-0 left-0 w-1 h-full bg-[#c3d9f3] opacity-0 group-hover:opacity-100 transition-opacity z-10"></div>
-                      
-                      <div className="flex flex-col gap-[16px] w-full md:w-auto relative z-10">
-                         <span className="typography-caption text-[#c3d9f3] tracking-[4px]">EXECUTIVE DOSSIER</span>
-                         <h3 className="typography-display-sm text-white">{DATA.profile.name}</h3>
-                         <p className="typography-body-sm text-[#999999] max-w-[400px]">19 // BLR // AI & Data Science Undergrad.<br/>Builder of intelligent systems and cognitive architectures.</p>
-                      </div>
-                      
-                      <div className="flex flex-col gap-[16px] w-full md:w-auto border-t md:border-t-0 md:border-l border-[#262626] pt-[24px] md:pt-0 md:pl-[40px] relative z-10">
-                         <a href={DATA.profile.linkedin} target="_blank" rel="noopener noreferrer" className="typography-nav text-[#cccccc] hover:text-white flex items-center gap-3 transition-colors">
-                           <Linkedin size={16} /> LINKEDIN NETWORK
-                         </a>
-                         <a href={DATA.profile.github} target="_blank" rel="noopener noreferrer" className="typography-nav text-[#cccccc] hover:text-white flex items-center gap-3 transition-colors">
-                           <Github size={16} /> GITHUB REPOSITORY
-                         </a>
-                         <a href={`https://discordapp.com/users/${DATA.profile.discord}`} target="_blank" rel="noopener noreferrer" className="typography-nav text-[#666666] hover:text-white flex items-center gap-3 mt-2 transition-colors">
-                           <DiscordIcon size={16} /> {DATA.profile.discord}
-                         </a>
-                      </div>
-                   </div>
-                </section>
-
-                <section className="mb-[120px]">
-                   <div className="grid grid-cols-1 md:grid-cols-4 border-t border-l border-[#262626]">
-                     {[
-                       { label: "PRIMARY DOMAIN", val: "AI & DATA SCIENCE" },
-                       { label: "COGNITIVE LEANING", val: "HIGHLY ANALYTICAL" },
-                       { label: "BACKGROUND", val: "ALGO TRADING" },
-                       { label: "LONG-TERM VECTOR", val: "SOCIAL IMPACT" }
-                     ].map((stat, i) => (
-                       <div key={i} className="border-b border-r border-[#262626] p-6 bg-[#000000] hover:bg-[#0d0d0d] transition-colors animate-fade-in" style={{ animationDelay: `${0.3 + (i * 0.1)}s`, animationFillMode: 'both' }}>
-                         <div className="typography-caption text-[#666666] mb-4">// {stat.label}</div>
-                         <div className="typography-title-md text-white">{stat.val}</div>
-                       </div>
-                     ))}
-                   </div>
-                </section>
-
-                <section className="mb-[120px] grid grid-cols-1 lg:grid-cols-2 gap-[64px]">
-                  <div>
-                    <div className="flex items-center gap-4 mb-[40px]">
-                      <h2 className="typography-display-lg">SYSTEM ARCHITECTURE</h2>
-                    </div>
-                    <div className="flex flex-col gap-[24px]">
-                      {DATA.projects.map((proj, idx) => (
-                        <div key={proj.id} className="p-[24px] border border-[#262626] bg-[#0d0d0d] hover:border-white transition-colors cursor-pointer group animate-fade-in" style={{ animationDelay: `${0.4 + (idx * 0.1)}s`, animationFillMode: 'both' }} onClick={() => navigate('projects')}>
-                          <div className="flex justify-between items-center mb-[16px]">
-                            <span className="typography-caption text-[#666666]">PRJ—{String(proj.id).padStart(3, '0')}</span>
-                            <ArrowRight size={14} className="text-[#3a3a3a] group-hover:text-white transition-colors"/>
-                          </div>
-                          <h3 className="typography-display-sm text-white mb-[12px]">{proj.title}</h3>
-                          <p className="typography-body-sm text-[#999999] line-clamp-2">{proj.problem}</p>
-                        </div>
-                      ))}
-                      <div className="pt-4">
-                         <TextLink onClick={() => navigate('projects')}>VIEW FULL PROJECT SPECS</TextLink>
-                      </div>
-                    </div>
-                  </div>
-
-                  <div>
-                    <div className="flex items-center gap-4 mb-[40px]">
-                      <h2 className="typography-display-lg">ACTIVE LEARNING</h2>
-                    </div>
-                    <div className="flex flex-col gap-[24px]">
-                      {DATA.learning.slice(0,2).map((cert, idx) => (
-                        <div key={cert.id} className="p-[24px] border border-[#262626] bg-black hover:border-[#c3d9f3] transition-colors cursor-pointer animate-fade-in" style={{ animationDelay: `${0.5 + (idx * 0.1)}s`, animationFillMode: 'both' }} onClick={() => navigate('learning')}>
-                          <div className="flex justify-between items-center mb-[16px]">
-                             <span className="typography-caption text-[#c3d9f3]">{cert.id}</span>
-                             <span className="typography-caption text-[#999999]">{cert.progress}% DONE</span>
-                          </div>
-                          <h3 className="typography-title-md text-white mb-[8px]">{cert.course}</h3>
-                          <p className="typography-body-sm text-[#666666] mb-[16px]">{cert.institution}</p>
-                          <div className="w-full h-[2px] bg-[#262626] mt-[16px]">
-                            <div className="h-full bg-white transition-all duration-1000 ease-out" style={{ width: `${cert.progress}%` }}></div>
-                          </div>
-                        </div>
-                      ))}
-                      <div className="pt-4">
-                         <TextLink onClick={() => navigate('learning')}>VIEW ALL CERTIFICATION METRICS</TextLink>
-                      </div>
-                    </div>
-                  </div>
-                </section>
-
-                <section className="mb-[120px] animate-fade-in" style={{ animationDelay: '0.6s', animationFillMode: 'both' }}>
-                  <div className="flex items-center gap-4 mb-[40px]">
-                    <h2 className="typography-display-lg">CURRENT FOCUS</h2>
-                    <div className="w-full h-[1px] bg-[#262626] flex-1"></div>
-                  </div>
-                  <div className="p-[24px] bg-[#141414] border border-[#262626]">
-                    <div className="grid grid-cols-1 md:grid-cols-3 gap-[40px]">
-                      <div>
-                        <h3 className="typography-caption text-[#999999] mb-[16px]">// GOALS</h3>
-                        <ul className="space-y-[12px]">
-                          {DATA.focus.goals.slice(0,3).map((g,i) => <li key={i} className="typography-body-sm">{g}</li>)}
-                        </ul>
-                      </div>
-                      <div>
-                        <h3 className="typography-caption text-[#999999] mb-[16px]">// SKILLS IN PROGRESS</h3>
-                        <ul className="space-y-[12px]">
-                          {DATA.focus.skills.map((s,i) => <li key={i} className="typography-body-sm">{s}</li>)}
-                        </ul>
-                      </div>
-                      <div>
-                        <h3 className="typography-caption text-[#999999] mb-[16px]">// ACTIVE PROJECTS</h3>
-                        <ul className="space-y-[12px]">
-                          {DATA.focus.active.map((p,i) => <li key={i} className="typography-body-sm">{p}</li>)}
-                        </ul>
-                      </div>
-                    </div>
-                    <div className="mt-[40px] pt-[24px] border-t border-[#262626] flex justify-between items-center">
-                      <span className="typography-caption text-[#666666]">LAST UPDATED: {DATA.focus.lastUpdated}</span>
-                      <TextLink onClick={() => navigate('focus')}>FULL STATUS LOG</TextLink>
-                    </div>
-                  </div>
-                </section>
-              </div>
-            )}
-
-            {/* === ROUTE: IDENTITY === */}
-            {activeRoute === 'identity' && (
-              <div className="flex flex-col max-w-[1000px] animate-fade-in" style={{ animationFillMode: 'both' }}>
-                <h1 className="typography-display-xl mb-[64px]">CORE IDENTITY</h1>
-                <div className="grid grid-cols-1 md:grid-cols-12 gap-[64px] mb-[120px]">
-                  <div className="md:col-span-7 flex flex-col gap-[40px]">
-                    <div className="p-8 border border-[#262626] bg-[#050505]">
-                      <h3 className="typography-caption text-[#c3d9f3] mb-[24px]">// THE PHILOSOPHY</h3>
-                      <p className="typography-body-md text-white text-[18px] leading-relaxed">{DATA.identity.core}</p>
-                    </div>
-                    <div>
-                      <h3 className="typography-caption text-[#666666] mb-[16px]">// LONG-TERM VISION</h3>
-                      <p className="typography-body-md text-[#cccccc] italic">"{DATA.identity.vision}"</p>
-                    </div>
-                    <div>
-                      <h3 className="typography-caption text-[#666666] mb-[16px]">// LEARNING APPROACH</h3>
-                      <p className="typography-body-md text-[#cccccc]">{DATA.identity.approach}</p>
-                    </div>
-                  </div>
-                  <div className="md:col-span-5 flex flex-col gap-[40px]">
-                    <div>
-                       <h3 className="typography-display-sm mb-[24px] border-b border-[#262626] pb-4">PSYCHOLOGICAL TRAITS</h3>
-                       <ul className="space-y-[16px]">
-                         {DATA.identity.traits.map((trait, i) => (
-                           <li key={i} className="flex items-start gap-3 typography-body-sm text-[#cccccc] animate-fade-in" style={{ animationDelay: `${i * 0.1}s`, animationFillMode: 'both' }}>
-                             <span className="text-[#3a3a3a] mt-1 font-mono text-[10px]">0{i+1}</span>{trait}
-                           </li>
-                         ))}
-                       </ul>
-                    </div>
-                    <div>
-                       <h3 className="typography-display-sm mb-[24px] border-b border-[#262626] pb-4">INTEREST DOMAINS</h3>
-                       <ul className="space-y-[16px]">
-                         {DATA.identity.domains.map((domain, i) => (
-                           <li key={i} className="flex items-start gap-3 typography-body-sm text-[#cccccc] animate-fade-in" style={{ animationDelay: `${0.3 + (i * 0.1)}s`, animationFillMode: 'both' }}>
-                             <span className="text-[#3a3a3a] mt-1 font-mono text-[10px]">0{i+1}</span>{domain}
-                           </li>
-                         ))}
-                       </ul>
-                    </div>
-                  </div>
-                </div>
-              </div>
-            )}
-
-            {/* === ROUTE: JOURNEY === */}
-            {activeRoute === 'journey' && (
-              <div className="flex flex-col max-w-[900px] animate-fade-in" style={{ animationFillMode: 'both' }}>
-                <h1 className="typography-display-xl mb-[120px]">THE JOURNEY</h1>
-                <div className="relative">
-                  <div className="hidden md:block absolute left-[200px] top-0 bottom-0 w-[1px] bg-[#262626]"></div>
-                  <div className="flex flex-col">
-                    {DATA.journey.map((entry, idx) => (
-                      <div key={entry.id} className="py-[64px] border-b md:border-none border-[#262626] flex flex-col md:flex-row gap-[24px] md:gap-[64px] relative group animate-fade-in" style={{ animationDelay: `${idx * 0.2}s`, animationFillMode: 'both' }}>
-                        <div className="w-full md:w-[136px] shrink-0 md:text-right pt-1">
-                          <span className="typography-caption text-[#999999]">{entry.date}</span>
-                        </div>
-                        <div className="hidden md:block absolute left-[197px] top-[70px] w-[7px] h-[7px] rounded-full bg-[#3a3a3a] group-hover:bg-white transition-all duration-500 group-hover:scale-[1.5]"></div>
-                        <div className="flex-1">
-                          <h3 className="typography-title-md text-white mb-[32px]">{entry.title}</h3>
-                          <div className="grid grid-cols-1 gap-[24px]">
-                            <div>
-                              <h4 className="typography-caption text-[#666666] mb-[8px]">WHAT I DID</h4>
-                              <p className="typography-body-sm text-[#e6e6e6]">{entry.did}</p>
-                            </div>
-                            <div>
-                              <h4 className="typography-caption text-[#666666] mb-[8px]">WHAT I LEARNED</h4>
-                              <p className="typography-body-sm text-[#cccccc]">{entry.learned}</p>
-                            </div>
-                            <div>
-                              <h4 className="typography-caption text-[#666666] mb-[8px]">WHAT CHANGED</h4>
-                              <p className="typography-body-sm text-[#999999] italic">{entry.changed}</p>
-                            </div>
-                          </div>
-                        </div>
-                      </div>
-                    ))}
-                  </div>
-                </div>
-              </div>
-            )}
-
-            {/* === ROUTE: LEARNING === */}
-            {activeRoute === 'learning' && (
-              <div className="flex flex-col animate-fade-in" style={{ animationFillMode: 'both' }}>
-                <h1 className="typography-display-xl mb-[32px]">CERTIFICATION MONOLITHS</h1>
-                <p className="typography-body-md text-[#999999] max-w-[600px] mb-[120px]">
-                  Not just certificates. Deep-dives into the friction, methodology, and the measurable delta achieved during each learning protocol.
-                </p>
-                <div className="grid grid-cols-1 lg:grid-cols-3 gap-[40px]">
-                  {DATA.learning.map((cert, idx) => (
-                    <div key={cert.id} className="relative group border border-[#262626] bg-[#050505] overflow-hidden transition-all duration-500 hover:border-[#c3d9f3] flex flex-col min-h-[600px] animate-fade-in" style={{ animationDelay: `${idx * 0.15}s`, animationFillMode: 'both' }}>
-                      <div className="p-[32px] border-b border-[#262626] bg-[#0d0d0d] relative z-10">
-                        <div className="flex justify-between items-center mb-[24px]">
-                           <div className="flex items-center gap-4">
-                             <span className="typography-caption text-[#c3d9f3] font-bold tracking-[4px]">{cert.id}</span>
-                             {cert.link && (
-                               <a href={cert.link} target="_blank" rel="noopener noreferrer" className="text-[#666666] hover:text-white transition-colors" title="Verify Credentials">
-                                 <ExternalLink size={14} />
-                               </a>
-                             )}
-                           </div>
-                           <Activity size={16} className={cert.progress === 100 ? "text-white" : "text-[#666666]"} />
-                        </div>
-                        <h3 className="typography-display-sm text-white leading-tight mb-[16px]">{cert.course}</h3>
-                        <p className="typography-caption text-[#999999]">{cert.institution}</p>
-                      </div>
-                      <div className="w-full h-[3px] bg-[#141414] relative z-10">
-                         <div className="h-full bg-[#c3d9f3] transition-all duration-1000 ease-out delay-500" style={{ width: `${cert.progress}%` }}></div>
-                      </div>
-                      <div className="p-[32px] flex flex-col gap-[32px] flex-1 z-10 bg-[#050505] group-hover:bg-black transition-colors">
-                        <div>
-                          <h4 className="typography-caption text-[#666666] mb-[12px] flex items-center gap-2"><span className="w-1 h-1 bg-[#666666]"></span> METHODOLOGY</h4>
-                          <p className="typography-body-sm text-[#cccccc]">{cert.methodology}</p>
-                        </div>
-                        <div>
-                          <h4 className="typography-caption text-[#666666] mb-[12px] flex items-center gap-2"><span className="w-1 h-1 bg-[#666666]"></span> FRICTION / CHALLENGE</h4>
-                          <p className="typography-body-sm text-[#cccccc]">{cert.challenge}</p>
-                        </div>
-                        <div className="mt-auto pt-[24px] border-t border-[#262626]">
-                          <h4 className="typography-caption text-white mb-[12px] flex items-center gap-2"><span className="w-1 h-1 bg-white"></span> METRIC DELTA</h4>
-                          <p className="typography-body-sm text-[#e6e6e6] font-medium">{cert.metrics}</p>
-                        </div>
-                      </div>
-                      <div className="absolute inset-0 bg-gradient-to-b from-[#c3d9f3]/[0.02] to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-700 pointer-events-none"></div>
-                    </div>
-                  ))}
-                </div>
-              </div>
-            )}
-
-            {/* === ROUTE: PROJECTS === */}
-            {activeRoute === 'projects' && (
-              <div className="flex flex-col animate-fade-in" style={{ animationFillMode: 'both' }}>
-                <h1 className="typography-display-xl mb-[120px]">PROJECT ARCHITECTURE</h1>
-                <div className="flex flex-col gap-[64px]">
-                  {DATA.projects.map((proj, idx) => (
-                    <div key={proj.id} className="group flex flex-col md:flex-row border border-[#262626] bg-[#0d0d0d] hover:border-[#666666] transition-colors duration-500 animate-fade-in" style={{ animationDelay: `${idx * 0.2}s`, animationFillMode: 'both' }}>
-                      <div className="w-full md:w-[320px] bg-black border-b md:border-b-0 md:border-r border-[#262626] p-[32px] flex flex-col justify-between aspect-video md:aspect-auto">
-                         <span className="typography-caption text-[#3a3a3a]">PRJ—{String(proj.id).padStart(3, '0')}</span>
-                         <div className="w-[40px] h-[1px] bg-white group-hover:w-full transition-all duration-700 ease-in-out"></div>
-                      </div>
-                      <div className="flex-1 p-[32px] md:p-[64px]">
-                        <h2 className="typography-display-md text-white mb-[40px]">{proj.title}</h2>
-                        <div className="grid grid-cols-1 md:grid-cols-2 gap-[40px]">
-                          <div>
-                            <h4 className="typography-caption text-[#666666] mb-[12px]">PROBLEM</h4>
-                            <p className="typography-body-md text-[#cccccc]">{proj.problem}</p>
-                          </div>
-                          <div>
-                            <h4 className="typography-caption text-[#666666] mb-[12px]">APPROACH</h4>
-                            <p className="typography-body-md text-[#cccccc]">{proj.approach}</p>
-                          </div>
-                          <div className="md:col-span-2 pt-[24px] border-t border-[#262626]">
-                            <h4 className="typography-caption text-[#c3d9f3] mb-[12px]">OUTCOME & LEARNING</h4>
-                            <p className="typography-body-sm text-[#e6e6e6] mb-[16px]">{proj.outcome}</p>
-                            <p className="typography-body-sm text-[#999999] italic">{proj.learnings}</p>
-                          </div>
-                        </div>
-                      </div>
-                    </div>
-                  ))}
-                </div>
-              </div>
-            )}
-
-            {/* === ROUTE: FOCUS === */}
-            {activeRoute === 'focus' && (
-              <div className="flex flex-col max-w-[1000px] mx-auto w-full animate-fade-in" style={{ animationFillMode: 'both' }}>
-                <div className="mb-[64px] flex items-center gap-4">
-                   <span className="w-3 h-3 rounded-full bg-[#c3d9f3] animate-pulse"></span>
-                   <h1 className="typography-display-xl text-white">SYSTEM STATUS</h1>
-                </div>
-                <div className="p-[32px] md:p-[64px] border border-[#262626] bg-[#0d0d0d]">
-                  <div className="grid grid-cols-1 md:grid-cols-2 gap-[80px]">
-                    <div className="flex flex-col gap-[64px]">
-                      <div>
-                        <h2 className="typography-caption text-[#c3d9f3] mb-[24px] border-b border-[#262626] pb-[16px]">// CURRENT GOALS</h2>
-                        <ul className="space-y-[24px]">
-                          {DATA.focus.goals.map((goal, idx) => <li key={idx} className="typography-body-md text-white animate-fade-in" style={{ animationDelay: `${idx * 0.1}s`, animationFillMode: 'both' }}>{goal}</li>)}
-                        </ul>
-                      </div>
-                      <div>
-                        <h2 className="typography-caption text-[#999999] mb-[24px] border-b border-[#262626] pb-[16px]">// ACTIVE PROJECTS</h2>
-                        <ul className="space-y-[24px]">
-                          {DATA.focus.active.map((proj, idx) => (
-                            <li key={idx} className="typography-body-md text-white flex items-center justify-between animate-fade-in" style={{ animationDelay: `${0.3 + (idx * 0.1)}s`, animationFillMode: 'both' }}>
-                              {proj} <ArrowRight size={14} className="text-[#666666]"/>
-                            </li>
-                          ))}
-                        </ul>
-                      </div>
-                    </div>
-                    <div className="flex flex-col gap-[64px]">
-                       <div>
-                        <h2 className="typography-caption text-[#999999] mb-[24px] border-b border-[#262626] pb-[16px]">// SKILLS IN ROTATION</h2>
-                        <ul className="space-y-[24px]">
-                          {DATA.focus.skills.map((skill, idx) => <li key={idx} className="typography-title-md text-[#cccccc] tracking-[0] normal-case animate-fade-in" style={{ animationDelay: `${0.6 + (idx * 0.1)}s`, animationFillMode: 'both' }}>{skill}</li>)}
-                        </ul>
-                      </div>
-                      <div className="mt-auto pt-[40px]">
-                        <div className="bg-black border border-[#262626] p-[24px] relative overflow-hidden group">
-                           <div className="absolute top-0 left-0 w-full h-[1px] bg-[#c3d9f3]/20 animate-scanline pointer-events-none"></div>
-                           <p className="typography-caption text-[#666666] mb-[8px]">SYSTEM LOAD: {sysLoad.toFixed(1)}%</p>
-                           <p className="typography-body-sm text-[#999999]">Operating nominally. Current learning vector oriented towards system level AI architecture and cognitive behavior mapping. No immediate pivots planned.</p>
-                        </div>
-                      </div>
-                    </div>
-                  </div>
-                  <div className="mt-[80px] pt-[32px] border-t border-[#262626]">
-                    <p className="typography-caption text-[#666666]">DATA LAST SYNCED: {DATA.focus.lastUpdated}</p>
-                  </div>
-                </div>
-              </div>
-            )}
-          </main>
-
-          {/* FOOTER */}
-          <footer className="mt-[120px] px-6 md:px-12 max-w-[1280px] mx-auto border-t border-[#262626] pt-[64px] pb-[64px] relative z-10">
-            <div className="flex flex-col md:flex-row justify-between items-start gap-[64px] md:gap-0">
-              <div className="flex flex-col">
-                <div className="typography-wordmark text-white mb-[32px] text-[20px] tracking-[8px]">{DATA.profile.name}</div>
-                <p className="typography-body-sm text-[#666666] max-w-[300px]">
-                  A command centre for growth, engineering, and systemic learning. Built on principles of extreme minimalism and precision.
-                </p>
-              </div>
-              <div className="grid grid-cols-2 gap-[64px]">
-                <div className="flex flex-col gap-[16px]">
-                  <span className="typography-caption text-[#3a3a3a] mb-[8px]">NAVIGATION</span>
-                  {['home', 'identity', 'journey', 'learning', 'projects', 'focus', 'dossier'].map(route => (
-                    <button key={route} onClick={() => navigate(route)} className="typography-body-sm text-[#999999] hover:text-white text-left uppercase tracking-widest text-[11px] font-mono transition-colors">
-                      {route}
-                    </button>
-                  ))}
-                </div>
-                <div className="flex flex-col gap-[16px]">
-                  <span className="typography-caption text-[#3a3a3a] mb-[8px]">CONNECT</span>
-                  <a href={DATA.profile.linkedin} target="_blank" rel="noopener noreferrer" className="typography-body-sm text-[#999999] hover:text-[#c3d9f3] flex items-center gap-2 transition-colors">
-                    LinkedIn <ExternalLink size={12} />
-                  </a>
-                  <a href={DATA.profile.github} target="_blank" rel="noopener noreferrer" className="typography-body-sm text-[#999999] hover:text-[#c3d9f3] flex items-center gap-2 transition-colors">
-                    GitHub <ExternalLink size={12} />
-                  </a>
-                  <a href={`https://discordapp.com/users/${DATA.profile.discord}`} target="_blank" rel="noopener noreferrer" className="typography-body-sm text-[#999999] hover:text-[#c3d9f3] flex items-center gap-2 mt-1 transition-colors">
-                    <DiscordIcon size={12} /> {DATA.profile.discord}
-                  </a>
-                </div>
-              </div>
-            </div>
-            <div className="mt-[120px] flex justify-between items-center text-[#666666] typography-caption text-[10px]">
-              <span>© {new Date().getFullYear()} RAHUL J. ALL RIGHTS RESERVED.</span>
-              <span>SYSTEM VERSION: ALPHA 1.3</span>
-            </div>
-          </footer>
+  <a class="skip-link" href="#main-content">Skip to main content</a>
+  <div class="pp-grid-bg" aria-hidden="true"></div><div class="pp-meter" aria-hidden="true"><span></span></div>
+  <header class="pp-chip" data-header>
+    <nav aria-label="Primary">
+      <ul class="pp-chip-list">
+        <li><a class="pp-chip-link" href="#work">Work</a></li>
+        <li><a class="pp-chip-link" href="#practice">Practice</a></li>
+        <li><a class="pp-chip-link" href="#trajectory">Trajectory</a></li>
+        <li><a class="pp-chip-link" href="#projects">Projects</a></li>
+        <li><a class="pp-chip-link" href="#disciplines">Disciplines</a></li>
+        <li><a class="pp-chip-link" href="#now">Now</a></li>
+        <li><a class="pp-chip-link" href="#record">Record</a></li>
+        <li><a class="pp-chip-link" href="#contact">Contact</a></li>
+      </ul>
+    </nav>
+  </header>
+  <main id="main-content" tabindex="-1" class="pp-main">
+    <section id="overview" class="pp-hero" aria-labelledby="hero-title" data-archetype="brand-paper" data-layout-system="editorial-columns" data-hero>
+      <canvas class="pp-field" data-pp-field="hero" aria-hidden="true"></canvas>
+      <div class="pp-mast">
+        <div class="pp-mast-l">
+          <h1 class="pp-h1" id="hero-title" aria-label="MACHINE LEARNING, MARKETS &amp; THE MIND." data-pp-decode><span class="pp-ln"><span>MACHINE LEARNING,</span></span><span class="pp-ln"><span>MARKETS &amp; THE MIND.</span></span></h1>
         </div>
-      );
-    };
+        <div class="pp-mast-c"><p class="pp-tag">AI &amp; Data Science · CMRIT ’28 · Bengaluru</p></div>
+        <div class="pp-mast-r"><svg class="pp-logo" width="30" height="18" viewBox="0 0 30 18" fill="currentColor" aria-hidden="true" focusable="false" shape-rendering="crispEdges"><rect x="0" y="0" width="6" height="6"/><rect x="12" y="0" width="6" height="6"/><rect x="24" y="0" width="6" height="6"/><rect x="6" y="6" width="6" height="6"/><rect x="18" y="6" width="6" height="6"/><rect x="0" y="12" width="6" height="6"/><rect x="12" y="12" width="6" height="6"/><rect x="24" y="12" width="6" height="6"/></svg><p class="pp-intro-s">Rahul J. builds learning systems for retrieval, ranking, anomaly detection and vision, and studies the economics and psychology that decide whether such systems matter.</p></div>
+      </div>
+      <p class="pp-status pp-mono" data-pp-status><span class="pp-prompt" aria-hidden="true">&gt;</span> <span class="pp-status-t">Currently: Founding AI &amp; Product Engineer, Gojocart. Reading for a B.E. in Artificial Intelligence &amp; Data Science, CMRIT, class of 2028.</span></p>
+      <a class="pp-cue pp-mono" href="#intro"><span>Scroll</span><i aria-hidden="true"></i></a>
+    </section>
+    <section id="intro" class="pp-intro" aria-label="// Profile">
+      <div class="pp-wrap pp-r">
+        <p class="pp-lead" data-pp-lead><span class="pp-w">I</span> <span class="pp-w">work</span> <span class="pp-w">where</span> <span class="pp-w">disciplines</span> <span class="pp-w">meet.</span> <em><span class="pp-w">Engineering</span> <span class="pp-w">supplies</span> <span class="pp-w">the</span> <span class="pp-w">method,</span> <span class="pp-w">statistics</span> <span class="pp-w">the</span> <span class="pp-w">discipline,</span> <span class="pp-w">and</span> <span class="pp-w">economics</span> <span class="pp-w">and</span> <span class="pp-w">psychology</span> <span class="pp-w">the</span> <span class="pp-w">questions</span> <span class="pp-w">worth</span> <span class="pp-w">asking;</span> <span class="pp-w">each</span> <span class="pp-w">project</span> <span class="pp-w">is</span> <span class="pp-w">an</span> <span class="pp-w">attempt</span> <span class="pp-w">to</span> <span class="pp-w">make</span> <span class="pp-w">one</span> <span class="pp-w">of</span> <span class="pp-w">them</span> <span class="pp-w">answer</span> <span class="pp-w">to</span> <span class="pp-w">the</span> <span class="pp-w">others.</span></em></p>
+        <p class="pp-by pp-mono">// Profile</p>
+      </div>
+    </section>
+    <section id="work" class="pp-caro" aria-labelledby="work-h">
+      <div class="pp-ch pp-r">
+        <h2 id="work-h" class="pp-h2">Selected work</h2>
+        <div class="pp-ctrl">
+          <span class="pp-count pp-mono" data-pp-count aria-live="off">01 / 05</span>
+          <button type="button" class="pp-arrow" data-pp-prev aria-label="Previous item"><span aria-hidden="true">←</span></button>
+          <button type="button" class="pp-arrow" data-pp-next aria-label="Next item"><span aria-hidden="true">→</span></button>
+        </div>
+      </div>
+      <div class="pp-track" data-pp-track data-index="0" tabindex="0" role="group" aria-roledescription="carousel" aria-label="Selected work slides">
+        <article class="pp-slide" data-pp-slide aria-roledescription="slide" aria-label="1 of 5">
+          <div class="pp-pv"><canvas data-pp-plate data-seed="01 · NORTHSTAR" aria-hidden="true"></canvas><span class="pp-pv-id pp-mono" aria-hidden="true">01 · NORTHSTAR</span><span class="pp-pv-bars" aria-hidden="true"></span></div>
+          <div class="pp-sl-cap">
+            <h3 class="pp-sl-t">NorthStar</h3>
+            <p class="pp-sl-d">An offline-first, retrieval-augmented tutor for low-connectivity classrooms, answering on a CPU in under two seconds.</p>
+            <ul class="pp-tags"><li class="t0">RAG</li><li class="t1">FAISS</li><li class="t2">Local LLM</li></ul>
+            <p class="pp-sl-m pp-mono">1st place · CodeRush 2026</p>
+          </div>
+        </article>
+        <article class="pp-slide" data-pp-slide aria-roledescription="slide" aria-label="2 of 5">
+          <div class="pp-pv"><canvas data-pp-plate data-seed="02 · OPENENV" aria-hidden="true"></canvas><span class="pp-pv-id pp-mono" aria-hidden="true">02 · OPENENV</span><span class="pp-pv-bars" aria-hidden="true"></span></div>
+          <div class="pp-sl-cap">
+            <h3 class="pp-sl-t">OpenENV</h3>
+            <p class="pp-sl-d">A multi-objective decision agent that triages, schedules and executes enterprise work under real-time constraints.</p>
+            <ul class="pp-tags"><li class="t1">Agents</li><li class="t2">FastAPI</li><li class="t3">Docker</li></ul>
+            <p class="pp-sl-m pp-mono">0.98+ Easy/Medium · 0.90+ Hard</p>
+          </div>
+        </article>
+        <article class="pp-slide" data-pp-slide aria-roledescription="slide" aria-label="3 of 5">
+          <div class="pp-pv"><canvas data-pp-plate data-seed="03 · TALENTMATCH" aria-hidden="true"></canvas><span class="pp-pv-id pp-mono" aria-hidden="true">03 · TALENTMATCH</span><span class="pp-pv-bars" aria-hidden="true"></span></div>
+          <div class="pp-sl-cap">
+            <h3 class="pp-sl-t">TalentMatch AI</h3>
+            <p class="pp-sl-d">Explainable candidate ranking on SBERT embeddings and fifteen engineered signals, with per-candidate reasoning.</p>
+            <ul class="pp-tags"><li class="t2">NLP</li><li class="t3">Ranking</li><li class="t4">SBERT</li></ul>
+            <p class="pp-sl-m pp-mono">+22% ranking correlation vs TF-IDF</p>
+          </div>
+        </article>
+        <article class="pp-slide" data-pp-slide aria-roledescription="slide" aria-label="4 of 5">
+          <div class="pp-pv"><canvas data-pp-plate data-seed="04 · SENTINELSENSE" aria-hidden="true"></canvas><span class="pp-pv-id pp-mono" aria-hidden="true">04 · SENTINELSENSE</span><span class="pp-pv-bars" aria-hidden="true"></span></div>
+          <div class="pp-sl-cap">
+            <h3 class="pp-sl-t">SentinelSense</h3>
+            <p class="pp-sl-d">Real-time anomaly detection on multivariate sensor streams, combining classical detectors with an LSTM autoencoder.</p>
+            <ul class="pp-tags"><li class="t3">Time series</li><li class="t4">LSTM</li><li class="t5">IoT</li></ul>
+            <p class="pp-sl-m pp-mono">F1 0.87 on SKAB · −31% false positives</p>
+          </div>
+        </article>
+        <article class="pp-slide" data-pp-slide aria-roledescription="slide" aria-label="5 of 5">
+          <div class="pp-pv"><canvas data-pp-plate data-seed="05 · VALOVISION" aria-hidden="true"></canvas><span class="pp-pv-id pp-mono" aria-hidden="true">05 · VALOVISION</span><span class="pp-pv-bars" aria-hidden="true"></span></div>
+          <div class="pp-sl-cap">
+            <h3 class="pp-sl-t">ValoVision</h3>
+            <p class="pp-sl-d">A computer-vision pipeline that detects events in FPS gameplay and turns them into measures of player behaviour.</p>
+            <ul class="pp-tags"><li class="t4">YOLOv8</li><li class="t5">OpenCV</li><li class="t0">Vision</li></ul>
+            <p class="pp-sl-m pp-mono">91% event-detection precision</p>
+          </div>
+        </article>
+      </div>
+      <p class="pp-hint pp-mono">Drag, scroll or use the arrow keys</p>
+    </section>
+    <section id="practice" class="pp-ed" aria-labelledby="practice-h">
+      <div class="pp-wrap pp-ed-grid">
+        <div class="pp-head pp-r"><h2 id="practice-h" class="pp-h2">One inquiry, several instruments.</h2><p class="pp-kick pp-mono">// Practice</p></div>
+        <div class="pp-body pp-r" style="--r:1">
+          <p>My work moves between machine learning, quantitative markets and the study of human behaviour. The subjects differ; the habit of mind does not. Each asks how a system should decide under uncertainty, and how to tell a real signal from a convenient story.</p>
+          <p>I learn by building. Theory is tested against a working artefact, results are measured against an honest baseline, and every model is expected to explain itself.</p>
+          <p class="pp-s">The long-term aim is independence of thought and work that compounds: a self-directed curriculum across deep technology, economics and behaviour, applied to problems that scale.</p>
 
-    const root = ReactDOM.createRoot(document.getElementById('root'));
-    root.render(<App />);
-  </script>
+        </div>
+      </div>
+    </section>
+    <section id="trajectory" class="pp-proc" aria-labelledby="trajectory-h">
+      <div class="pp-wrap">
+        <div class="pp-ph pp-r">
+          <h2 id="trajectory-h" class="pp-h2">A trajectory in four movements.</h2>
+          <p class="pp-kick pp-mono">// Trajectory</p>
+
+
+        </div>
+        <div class="pp-flow" aria-hidden="true"><canvas data-pp-field="flow" data-variant="0"></canvas></div>
+        <ol class="pp-steps pp-steps--4">
+          <li class="pp-step pp-r" style="--r:0" data-pp-step>
+            <p class="pp-dl"><b class="pp-dn pp-mono" aria-hidden="true">01</b><span class="pp-dt">Strategy and pattern</span></p>
+            <p class="pp-step-tag pp-mono">Foundations</p>
+            <p class="pp-dd">Early study of strategic play through chess and programming.</p>
+
+            <p class="pp-dd"><span class="pp-mono pp-dk">Learned</span> Pattern recognition and foresight are general instruments; they transfer across every serious domain.</p>
+
+            <span class="pp-pxline" aria-hidden="true"><i></i></span>
+          </li>
+          <li class="pp-step pp-r" style="--r:1" data-pp-step>
+            <p class="pp-dl"><b class="pp-dn pp-mono" aria-hidden="true">02</b><span class="pp-dt">Quantitative trading</span></p>
+            <p class="pp-step-tag pp-mono">Markets</p>
+            <p class="pp-dd">Traded forex through proprietary-firm evaluations using rule-based, risk-first algorithmic strategies.</p>
+
+            <p class="pp-dd"><span class="pp-mono pp-dk">Learned</span> Markets punish emotional bias. A modest system run with discipline outperforms a brilliant one run on instinct.</p>
+
+            <span class="pp-pxline" aria-hidden="true"><i></i></span>
+          </li>
+          <li class="pp-step pp-r" style="--r:2" data-pp-step>
+            <p class="pp-dl"><b class="pp-dn pp-mono" aria-hidden="true">03</b><span class="pp-dt">Formal study, CMRIT</span></p>
+            <p class="pp-step-tag pp-mono">2024 – 2028</p>
+            <p class="pp-dd">B.E. in Artificial Intelligence &amp; Data Science: machine learning, probability, linear algebra, algorithms and database systems.</p>
+
+            <p class="pp-dd"><span class="pp-mono pp-dk">Learned</span> Mathematics turns raw aptitude into engineered systems.</p>
+
+            <span class="pp-pxline" aria-hidden="true"><i></i></span>
+          </li>
+          <li class="pp-step pp-r" style="--r:3" data-pp-step>
+            <p class="pp-dl"><b class="pp-dn pp-mono" aria-hidden="true">04</b><span class="pp-dt">Industry, Gojocart</span></p>
+            <p class="pp-step-tag pp-mono">2025 – present</p>
+            <p class="pp-dd">Founding AI &amp; Product Engineer at a hyperlocal quick-commerce start-up based in Cassino, Italy, working remotely.</p>
+
+            <p class="pp-dd"><span class="pp-mono pp-dk">Learned</span> A model is only as useful as the operation it changes.</p>
+
+            <span class="pp-pxline" aria-hidden="true"><i></i></span>
+          </li>
+        </ol>
+
+      </div>
+    </section>
+    <section id="projects" class="pp-ed pp-log" aria-labelledby="projects-h">
+      <div class="pp-wrap pp-ed-grid">
+        <div class="pp-head pp-r"><h2 id="projects-h" class="pp-h2">Method and result.</h2><p class="pp-kick pp-mono">// Projects, in depth</p></div>
+        <ol class="pp-rows">
+          <li class="pp-row pp-r" style="--r:0" data-tone="0">
+            <div class="pp-row-top">
+              <span class="pp-code pp-mono">01 · NORTHSTAR</span>
+              <span class="pp-status-chip pp-mono">1st place · CodeRush 2026</span>
+            </div>
+            <h3 class="pp-row-t">NorthStar: an offline AI tutor</h3>
+            <p class="pp-row-m pp-mono">Python · SentenceTransformers · TF-IDF · FAISS · local LLM</p>
+
+            <div class="pp-detail"><p class="pp-mono pp-dk">Question</p><p>Can a capable study assistant work where the internet does not?</p></div><div class="pp-detail"><p class="pp-mono pp-dk">Method</p><p>Offline retrieval-augmented generation: FAISS and SBERT semantic search feeding a 4-bit quantised LLaMA-family model for on-device inference.</p></div><div class="pp-detail"><p class="pp-mono pp-dk">Result</p><p>Answers in under two seconds on a CPU. First place, Education domain, CodeRush 2026, a 24-hour national hackathon.</p></div>
+          </li>
+          <li class="pp-row pp-r" style="--r:1" data-tone="1">
+            <div class="pp-row-top">
+              <span class="pp-code pp-mono">02 · OPENENV</span>
+              <span class="pp-status-chip pp-mono">Meta AI OpenEnv Hackathon</span>
+            </div>
+            <h3 class="pp-row-t">OpenENV: an enterprise decision agent</h3>
+            <p class="pp-row-m pp-mono">Python · FastAPI · Pydantic · Docker · OpenEnv API</p>
+
+            <div class="pp-detail"><p class="pp-mono pp-dk">Question</p><p>How should an agent balance email triage, scheduling, task execution and system health when they compete?</p></div><div class="pp-detail"><p class="pp-mono pp-dk">Method</p><p>An RL-inspired policy layer that finds the weakest performance dimension at each step and chooses constraint-aware actions, keeping decision logic separate from LLM execution.</p></div><div class="pp-detail"><p class="pp-mono pp-dk">Result</p><p>Baseline scores of 0.98+ on Easy and Medium tasks and 0.90+ on Hard. Deployed with Docker to Hugging Face Spaces behind FastAPI and Gradio, following OpenEnv’s reset, step and state contract.</p></div>
+          </li>
+          <li class="pp-row pp-r" style="--r:2" data-tone="2">
+            <div class="pp-row-top">
+              <span class="pp-code pp-mono">03 · TALENTMATCH</span>
+
+            </div>
+            <h3 class="pp-row-t">TalentMatch AI: explainable ranking</h3>
+            <p class="pp-row-m pp-mono">Python · scikit-learn · SentenceTransformers · NLP</p>
+
+            <div class="pp-detail"><p class="pp-mono pp-dk">Question</p><p>Can candidate ranking be both more accurate and easier to justify?</p></div><div class="pp-detail"><p class="pp-mono pp-dk">Method</p><p>Cosine similarity on SBERT embeddings combined with fifteen-plus engineered features, from TF-IDF vectors to skill-match ratios, in a weighted ensemble tuned by grid search.</p></div><div class="pp-detail"><p class="pp-mono pp-dk">Result</p><p>A 22% improvement in ranking correlation over a TF-IDF baseline, measured with NDCG@10 and Precision@K, with LLM-assisted, per-candidate explanations.</p></div>
+          </li>
+          <li class="pp-row pp-r" style="--r:3" data-tone="0">
+            <div class="pp-row-top">
+              <span class="pp-code pp-mono">04 · SENTINELSENSE</span>
+
+            </div>
+            <h3 class="pp-row-t">SentinelSense: anomalies in sensor streams</h3>
+            <p class="pp-row-m pp-mono">Python · scikit-learn · LSTM</p>
+
+            <div class="pp-detail"><p class="pp-mono pp-dk">Question</p><p>How do you catch genuine faults in multivariate IoT data without drowning operators in false alarms?</p></div><div class="pp-detail"><p class="pp-mono pp-dk">Method</p><p>Isolation Forest, One-Class SVM and a sliding-window LSTM autoencoder, with dynamic thresholds from rolling z-scores and adaptive percentiles, and severity-scored alerting.</p></div><div class="pp-detail"><p class="pp-mono pp-dk">Result</p><p>False positives down 31% against fixed thresholds. On the SKAB benchmark, F1 of 0.83 for Isolation Forest and 0.87 for the LSTM autoencoder on held-out data.</p></div>
+          </li>
+          <li class="pp-row pp-r" style="--r:4" data-tone="1">
+            <div class="pp-row-top">
+              <span class="pp-code pp-mono">05 · VALOVISION</span>
+
+            </div>
+            <h3 class="pp-row-t">ValoVision: reading gameplay as behaviour</h3>
+            <p class="pp-row-m pp-mono">Python · OpenCV · YOLOv8</p>
+
+            <div class="pp-detail"><p class="pp-mono pp-dk">Question</p><p>Can raw FPS footage be turned into reliable measures of how a player behaves?</p></div><div class="pp-detail"><p class="pp-mono pp-dk">Method</p><p>Frame differencing, contour analysis and a YOLOv8 model fine-tuned on more than 1,200 labelled frames, stabilised by sliding-window majority voting.</p></div><div class="pp-detail"><p class="pp-mono pp-dk">Result</p><p>91% event-detection precision on a held-out set, feeding kill-zone frequency, positional heatmaps and reaction-latency analysis.</p></div>
+          </li>
+        </ol>
+      </div>
+    </section>
+    <section id="disciplines" class="pp-ed" aria-labelledby="disciplines-h">
+      <div class="pp-wrap pp-ed-grid">
+        <div class="pp-head pp-r"><h2 id="disciplines-h" class="pp-h2">Instruments and inquiries.</h2><p class="pp-kick pp-mono">// Disciplines</p></div>
+        <div class="pp-body pp-r" style="--r:1">
+
+          <div class="pp-cols"><div class="pp-col">
+            <span class="pp-ico"><svg class="pp-pxi" width="35" height="35" viewBox="0 0 35 35" fill="currentColor" aria-hidden="true" focusable="false" shape-rendering="crispEdges"><rect x="14" y="0" width="7" height="7"/><rect x="21" y="0" width="7" height="7"/><rect x="28" y="0" width="7" height="7"/><rect x="7" y="7" width="7" height="7"/><rect x="14" y="7" width="7" height="7"/><rect x="21" y="7" width="7" height="7"/><rect x="0" y="14" width="7" height="7"/><rect x="7" y="14" width="7" height="7"/><rect x="14" y="14" width="7" height="7"/><rect x="21" y="14" width="7" height="7"/><rect x="28" y="14" width="7" height="7"/><rect x="14" y="21" width="7" height="7"/><rect x="21" y="21" width="7" height="7"/><rect x="7" y="28" width="7" height="7"/><rect x="14" y="28" width="7" height="7"/></svg></span>
+            <p class="pp-col-l pp-mono">Engineering</p>
+            <ol class="pp-col-list"><li><span class="pp-mono" aria-hidden="true">01</span><span>Python, SQL and C</span></li><li><span class="pp-mono" aria-hidden="true">02</span><span>PyTorch, scikit-learn, NumPy and pandas</span></li><li><span class="pp-mono" aria-hidden="true">03</span><span>NLP and vision: Hugging Face Transformers, SentenceTransformers, NLTK, OpenCV</span></li><li><span class="pp-mono" aria-hidden="true">04</span><span>Retrieval and serving: FAISS, FastAPI, Docker</span></li><li><span class="pp-mono" aria-hidden="true">05</span><span>Cloud: AWS EC2, S3 and Amazon EKS on Linux</span></li></ol>
+          </div><div class="pp-col">
+            <span class="pp-ico"><svg class="pp-pxi" width="35" height="35" viewBox="0 0 35 35" fill="currentColor" aria-hidden="true" focusable="false" shape-rendering="crispEdges"><rect x="7" y="0" width="7" height="7"/><rect x="14" y="0" width="7" height="7"/><rect x="21" y="0" width="7" height="7"/><rect x="0" y="7" width="7" height="7"/><rect x="7" y="7" width="7" height="7"/><rect x="14" y="7" width="7" height="7"/><rect x="21" y="7" width="7" height="7"/><rect x="28" y="7" width="7" height="7"/><rect x="0" y="14" width="7" height="7"/><rect x="7" y="14" width="7" height="7"/><rect x="14" y="14" width="7" height="7"/><rect x="21" y="14" width="7" height="7"/><rect x="28" y="14" width="7" height="7"/><rect x="0" y="21" width="7" height="7"/><rect x="7" y="21" width="7" height="7"/><rect x="14" y="21" width="7" height="7"/><rect x="21" y="21" width="7" height="7"/><rect x="28" y="21" width="7" height="7"/><rect x="7" y="28" width="7" height="7"/><rect x="14" y="28" width="7" height="7"/><rect x="21" y="28" width="7" height="7"/></svg></span>
+            <p class="pp-col-l pp-mono">Inquiry</p>
+            <ol class="pp-col-list"><li><span class="pp-mono" aria-hidden="true">01</span><span>Probability, statistics and linear algebra</span></li><li><span class="pp-mono" aria-hidden="true">02</span><span>Algorithms and data structures</span></li><li><span class="pp-mono" aria-hidden="true">03</span><span>The economics of artificial intelligence</span></li><li><span class="pp-mono" aria-hidden="true">04</span><span>Psychology, sociology and decision-making</span></li><li><span class="pp-mono" aria-hidden="true">05</span><span>Strategy, markets and real-world systems</span></li></ol>
+          </div></div>
+        </div>
+      </div>
+    </section>
+    <section id="now" class="pp-proc" aria-labelledby="now-h">
+      <div class="pp-wrap">
+        <div class="pp-ph pp-r">
+          <h2 id="now-h" class="pp-h2">Present inquiries.</h2>
+          <p class="pp-kick pp-mono">// Now</p>
+
+
+        </div>
+        <div class="pp-flow" aria-hidden="true"><canvas data-pp-field="flow" data-variant="1"></canvas></div>
+        <ol class="pp-steps pp-steps--3">
+          <li class="pp-step pp-r" style="--r:0" data-pp-step>
+            <p class="pp-dl"><b class="pp-dn pp-mono" aria-hidden="true">01</b><span class="pp-dt">Building</span></p>
+
+
+            <ul class="pp-items"><li>Forecasting and recommendation for hyperlocal merchants</li><li>A body of applied ML work in retrieval, agents and vision</li><li>Deeper fluency in algorithms and data structures</li></ul>
+
+
+            <span class="pp-pxline" aria-hidden="true"><i></i></span>
+          </li>
+          <li class="pp-step pp-r" style="--r:1" data-pp-step>
+            <p class="pp-dl"><b class="pp-dn pp-mono" aria-hidden="true">02</b><span class="pp-dt">Studying</span></p>
+
+
+            <ul class="pp-items"><li>Automation economics and its effect on labour</li><li>Behavioural models of judgement under uncertainty</li><li>Graduate management study, beginning with the GMAT</li></ul>
+
+
+            <span class="pp-pxline" aria-hidden="true"><i></i></span>
+          </li>
+          <li class="pp-step pp-r" style="--r:2" data-pp-step>
+            <p class="pp-dl"><b class="pp-dn pp-mono" aria-hidden="true">03</b><span class="pp-dt">Founding</span></p>
+
+
+            <ul class="pp-items"><li>A student initiative applying behavioural psychology to resilience and strategic thinking</li><li>Curriculum and support structure in design</li></ul>
+
+
+            <span class="pp-pxline" aria-hidden="true"><i></i></span>
+          </li>
+        </ol>
+
+      </div>
+    </section>
+    <section id="record" class="pp-ed pp-log" aria-labelledby="record-h">
+      <div class="pp-wrap pp-ed-grid">
+        <div class="pp-head pp-r"><h2 id="record-h" class="pp-h2">Practice and peer review.</h2><p class="pp-kick pp-mono">// Experience and service</p></div>
+        <ol class="pp-rows">
+          <li class="pp-row pp-r" style="--r:0" data-tone="1">
+            <div class="pp-row-top">
+              <span class="pp-code pp-mono">2025 – PRESENT</span>
+
+            </div>
+            <h3 class="pp-row-t">Gojocart</h3>
+            <p class="pp-row-m pp-mono">Founding AI &amp; Product Engineer · Cassino, Italy (remote)</p>
+
+            <div class="pp-detail"><p class="pp-mono pp-dk">Forecasting</p><p>Recommendation and demand-forecasting prototypes for hyperlocal merchant inventory, built on collaborative filtering and historical sales patterns.</p></div><div class="pp-detail"><p class="pp-mono pp-dk">Operations</p><p>Automated order routing, merchant onboarding and analytics dashboards, cutting manual processing by an estimated 40%.</p></div><div class="pp-detail"><p class="pp-mono pp-dk">Intelligence</p><p>Market intelligence from web data aggregation and NLP-based competitor signals, informing pricing and geographic expansion.</p></div>
+          </li>
+          <li class="pp-row pp-r" style="--r:1" data-tone="2">
+            <div class="pp-row-top">
+              <span class="pp-code pp-mono">2026</span>
+
+            </div>
+            <h3 class="pp-row-t">AICCoNS, International AI Conference</h3>
+            <p class="pp-row-m pp-mono">Research paper reviewer</p>
+
+            <div class="pp-detail"><p class="pp-mono pp-dk">Scope</p><p>Submissions in machine learning, NLP, computer vision, federated learning, AI security and adversarial AI, assessed for correctness, novelty, methodology and reproducibility.</p></div>
+          </li>
+          <li class="pp-row pp-r" style="--r:2" data-tone="0">
+            <div class="pp-row-top">
+              <span class="pp-code pp-mono">2026</span>
+
+            </div>
+            <h3 class="pp-row-t">EAMCON, via Microsoft CMT</h3>
+            <p class="pp-row-m pp-mono">Conference reviewer</p>
+
+            <div class="pp-detail"><p class="pp-mono pp-dk">Scope</p><p>Submissions in federated learning, intelligent computing and smart applications, assessed for originality, technical depth and practical impact.</p></div>
+          </li>
+          <li class="pp-row pp-r" style="--r:3" data-tone="1">
+            <div class="pp-row-top">
+              <span class="pp-code pp-mono">HONOURS</span>
+
+            </div>
+            <h3 class="pp-row-t">Recognition and credentials</h3>
+            <p class="pp-row-m pp-mono">Competitions · certifications</p>
+
+            <div class="pp-detail"><p class="pp-mono pp-dk">First place</p><p>CodeRush 2026, a 24-hour national hackathon (Education domain); Think Build Showcase, CMRIT project exhibition.</p></div><div class="pp-detail"><p class="pp-mono pp-dk">Competition</p><p>Meta AI OpenEnv Hackathon: multi-objective, RL-inspired task-automation agent.</p></div><div class="pp-detail"><p class="pp-mono pp-dk">Certification</p><p>Architecting Solutions on AWS (AWS, edX); Python Project for Data Engineering (IBM, edX); The Economics of AI (University of Virginia, Coursera).</p></div>
+          </li>
+        </ol>
+      </div>
+    </section>
+    <section id="contact" class="pp-cta" aria-labelledby="contact-h">
+      <div class="pp-wrap pp-r">
+        <p class="pp-kick pp-mono">// Contact</p>
+        <h2 id="contact-h" class="pp-cta-h">Correspondence.</h2>
+        <p class="pp-meta">Open to research collaboration, internships and problems that sit between fields.</p>
+        <ul class="pp-links"><li><a class="pp-btn" href="mailto:rahuljaiprakashden@gmail.com" data-pp-btn><span class="pp-btn-l">Write to me</span><span class="pp-btn-a" aria-hidden="true">→</span></a></li><li><a class="pp-btn" href="https://www.linkedin.com/in/rahulj7777" target="_blank" rel="noopener noreferrer" data-pp-btn><span class="pp-btn-l">LinkedIn<span class="sr-only"> (opens in a new tab)</span></span><span class="pp-btn-a" aria-hidden="true">↗</span></a></li><li><a class="pp-btn" href="https://github.com/SolvyrEryx" target="_blank" rel="noopener noreferrer" data-pp-btn><span class="pp-btn-l">GitHub<span class="sr-only"> (opens in a new tab)</span></span><span class="pp-btn-a" aria-hidden="true">↗</span></a></li></ul>
+        <p class="pp-upd pp-mono">Bengaluru, India</p>
+      </div>
+    </section>
+  </main>
+  <footer class="pp-foot">
+    <canvas class="pp-tetris" data-pp-tetris aria-hidden="true"></canvas>
+    <div class="pp-wrap pp-foot-in">
+      <div class="pp-foot-name"><p class="pp-foot-wm">RAHUL J.</p><p class="pp-foot-note">AI &amp; Data Science · Bengaluru · India</p></div>
+      <nav aria-label="Secondary">
+        <ul class="pp-foot-nav pp-mono">
+          <li><a href="#work">Work</a></li>
+          <li><a href="#practice">Practice</a></li>
+          <li><a href="#trajectory">Trajectory</a></li>
+          <li><a href="#projects">Projects</a></li>
+          <li><a href="#disciplines">Disciplines</a></li>
+          <li><a href="#now">Now</a></li>
+          <li><a href="#record">Record</a></li>
+          <li><a href="#contact">Contact</a></li>
+          <li><a href="mailto:rahuljaiprakashden@gmail.com">Write to me</a></li>
+          <li><a href="https://www.linkedin.com/in/rahulj7777" target="_blank" rel="noopener noreferrer">LinkedIn<span class="sr-only"> (opens in a new tab)</span></a></li>
+          <li><a href="https://github.com/SolvyrEryx" target="_blank" rel="noopener noreferrer">GitHub<span class="sr-only"> (opens in a new tab)</span></a></li>
+        </ul>
+      </nav>
+      <p class="pp-legal pp-mono"><span>© <span data-pp-year></span> RAHUL J.</span><span></span></p>
+    </div>
+  </footer>
+  <script src="./app.js" defer></script>
 </body>
 </html>
